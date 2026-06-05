@@ -1,0 +1,191 @@
+@model VetLinq.Models.ClinicViewModel
+@{
+    ViewData["Title"] = "Vet LINQ";
+}
+
+<header class="site-header">
+    <div class="header-inner">
+        <div class="header-logo">
+            <span class="logo-bracket">{</span>
+            <span class="logo-text">LINQ</span>
+            <span class="logo-bracket">}</span>
+        </div>
+        <div>
+            <h1>Vet Clinic — Collections & LINQ</h1>
+            <p>Week 2: List&lt;T&gt;, Dictionary, Where, Select, GroupBy and more</p>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrap">
+
+    <div class="two-col">
+
+        <section class="panel full-width">
+            <h2 class="panel-title"><span class="dot dot-blue"></span> Patients — List&lt;Patient&gt;</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Phone</th>
+                            <th>Symptom</th>
+                            <th>Pets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Patients)
+                        {
+                            <tr>
+                                <td class="id-cell">@p.Id</td>
+                                <td class="name-cell">@p.Name</td>
+                                <td>@p.Age</td>
+                                <td class="mono">@p.Phone</td>
+                                <td class="symptom">@p.Symptom</td>
+                                <td>
+                                    @foreach (var pet in p.Pets)
+                                    {
+                                        <span class="pet-chip @pet.Species.ToLower()">
+                                            @(pet.Species == "Dog" ? "🐕" : pet.Species == "Cat" ? "🐈" : pet.Species == "Bird" ? "🐦" : "🐟") @pet.Name
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="dict-note">
+                <span class="dict-label">Dictionary&lt;int, Patient&gt;</span>
+                @foreach (var kv in Model.PatientDictionary)
+                {
+                    <span class="dict-entry">[@kv.Key] → @kv.Value.Name</span>
+                }
+            </div>
+        </section>
+
+    </div>
+
+    <div class="section-title-row">
+        <span class="section-number">01</span>
+        <h2>Fundamental LINQ Methods</h2>
+        <span class="section-line"></span>
+    </div>
+
+    <div class="query-grid">
+        @foreach (var r in Model.QueryResults)
+        {
+            <div class="query-card">
+                <div class="query-header">
+                    <span class="method-badge">@r.Method</span>
+                    <span class="query-title">@r.Title</span>
+                </div>
+                <code class="query-code">@r.Description</code>
+                @if (r.ScalarValue != null)
+                {
+                    <div class="scalar-result">
+                        <span class="result-label">→</span>
+                        <span class="result-value">@r.ScalarValue</span>
+                    </div>
+                }
+                @if (r.Rows.Any())
+                {
+                    <ul class="result-list">
+                        @foreach (var row in r.Rows)
+                        {
+                            <li>@row</li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="section-title-row">
+        <span class="section-number">02</span>
+        <h2>Chained Queries</h2>
+        <span class="section-line"></span>
+    </div>
+
+    <div class="query-grid chained">
+        @foreach (var r in Model.ChainedResults)
+        {
+            <div class="query-card chain-card">
+                <div class="query-header">
+                    <span class="method-badge chain-badge">@r.Method</span>
+                    <span class="query-title">@r.Title</span>
+                </div>
+                <code class="query-code">@r.Description</code>
+                <ul class="result-list">
+                    @foreach (var row in r.Rows)
+                    {
+                        <li>@row</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    <div class="section-title-row">
+        <span class="section-number">03</span>
+        <h2>GroupBy</h2>
+        <span class="section-line"></span>
+    </div>
+
+    <div class="query-grid">
+        @foreach (var r in Model.GroupResults)
+        {
+            <div class="query-card group-card">
+                <div class="query-header">
+                    <span class="method-badge group-badge">@r.Method</span>
+                    <span class="query-title">@r.Title</span>
+                </div>
+                <code class="query-code">@r.Description</code>
+                <ul class="result-list">
+                    @foreach (var row in r.Rows)
+                    {
+                        <li>@row</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    <div class="section-title-row">
+        <span class="section-number">04</span>
+        <h2>Practical Problems</h2>
+        <span class="section-line"></span>
+    </div>
+
+    <div class="query-grid practical">
+        @foreach (var r in Model.PracticalResults)
+        {
+            <div class="query-card practical-card">
+                <div class="query-header">
+                    <span class="method-badge practical-badge">@r.Method</span>
+                    <span class="query-title">@r.Title</span>
+                </div>
+                <code class="query-code">@r.Description</code>
+                @if (r.ScalarValue != null)
+                {
+                    <div class="scalar-result">
+                        <span class="result-label">→</span>
+                        <span class="result-value">@r.ScalarValue</span>
+                    </div>
+                }
+                @if (r.Rows.Any())
+                {
+                    <ul class="result-list">
+                        @foreach (var row in r.Rows)
+                        {
+                            <li>@row</li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+
+</div>
